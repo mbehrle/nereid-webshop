@@ -108,6 +108,7 @@
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
       <div class="buy-box">
+        {% block buy_box %}
         <div itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
           <meta itemprop="priceCurrency" content="{{ request.nereid_currency.code }}" />
           {% set sale_price = product.sale_price(1) %}
@@ -137,6 +138,7 @@
             {% endif %}
           {% endif %}
         </div>
+        {% endblock buy_box %}
         {% block buy_buttons %}
         <div class="row">
           {% if product.salable %}
