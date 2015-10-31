@@ -690,6 +690,10 @@ msgctxt "nereid_template:webshop/base.jinja:422"
 msgid "Your shopping cart is empty"
 msgstr "Ihr Warenkorb ist leer"
 
+msgctxt "nereid_template:webshop/base.jinja:529"
+msgid "This product is already added to the cart"
+msgstr "Dieser Artikel befindet sich bereits in Ihrem Warenkorb."
+
 msgctxt "nereid_template:webshop/cart/sale-line.jinja:14"
 msgid "Qty:"
 msgstr "Anzahl:"
