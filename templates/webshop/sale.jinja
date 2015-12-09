@@ -111,7 +111,7 @@
                       <strong>{{ line.description }}</strong>
                       {% endif %}
                       <br>
-                      Qty: {{ line.quantity|int }} {{ line.unit.name }}
+                      {{ _('Qty:') }} {{ line.quantity|int }} {{ line.unit.name }}
                     </td>
                     <td class="col-md-4">
                       {{ line.amount|currencyformat(sale.currency.code) }}
