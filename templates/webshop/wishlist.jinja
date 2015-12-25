@@ -1,4 +1,5 @@
 {% extends 'account-base.jinja' %}
+{% block title %}{{ _('My wishlist') }} ({{ wishlist.name }}) {{ _('on') }} {{ super() }}{% endblock %}
 {% from '_helpers.jinja' import render_product_list %}
 {% block main %}
 <section class="my-account" id="specific-wishlist">
@@ -7,14 +8,35 @@
       {{ account_header(_('My Account / Wishlist'), 'wishlist') }}
       <div class="col-md-10">
         <div class="row margin-left-0">
-          <div class="col-md-10">
+          <div class="col-md-8">
             <h4 class="wishlist-heading">{{ wishlist.name|title }}</h4>
           </div>
-          <div class="col-md-2" id="wishlist-settings">
-            <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#privacy-settings">
-              <i class="fa fa-cog"></i> &nbsp;&nbsp;{{ _('Settings') }}
-            </button>
-          </div>
+          {% if wishlist.is_public %}
+            <div id="wishlist-share-buttons" class="col-md-3">
+              <a href="#" class="envelope fa fa-envelope"></a>
+              <a href="#" class="sh-facebook fa fa-facebook"></a>
+              <a href="#" class="sh-twitter fa fa-twitter"></a>
+              <a href="#" class="sh-googleplus fa fa-google-plus"></a>
+              <a href="#" class="sh-pinterest fa fa-pinterest"></a>
+            </div>
+          {% else %}
+            <form method="post" action="">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <input type="hidden" name="wishlist" value="{{ wishlist.id }}"/>
+              <input type="hidden" name="name" value="{{ wishlist.name }}"/>
+              <input type="hidden" name="is_public" value="on"/>
+              <div id="enable-share" class="col-md-2">
+                <button type="submit" class="btn btn-secondary pull-left" data-url="{{ url_for('wishlist.wishlist.render_wishlist', active_id=wishlist.id) }}" id="enable-share-btn">{{ _('Share') }}</button>
+              </div>
+            </form>
+          {% endif %}
+          {% if wishlist.nereid_user == current_user %}
+            <div class="col-md-1" id="wishlist-settings">
+              <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#privacy-settings"> 
+                <i class="fa fa-cog"></i> &nbsp;&nbsp;{{ _('Settings') }}
+              </button>
+            </div>
+          {% endif %}
           <div class="modal fade" id="privacy-settings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -28,7 +50,12 @@
                   <input type="hidden" name="wishlist" value="{{ wishlist.id }}">
                    <div class="form-group col-md-10 col-md-offset-1">
                      <label>{{ _('Edit Wishlist Name:') }}</label>
-                    <input type="text" name="name" value="" placeholder="Name" class="form-control" required >
+                    <input type="text" name="name" value="{{ wishlist.name }}" placeholder="Name" class="form-control" required >
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {% if wishlist.is_public %} checked {% endif %}  name="is_public">&nbsp;&nbsp;{{ _('Public') }}
+                      </label>
+                    </div>
                   </div>
                 </form>
                 </div>
@@ -111,6 +138,39 @@
         .done(function() {
           $(location).attr('href',"{{ url_for('wishlist.wishlist.render_wishlists', _external=True) }}");
       });
+    });
+    $('#wishlist-share-buttons').sharrre({
+        share: {
+          twitter: true,
+          facebook: true,
+          googlePlus: false,
+          pinterest: true
+        },
+        url: window.location.href,
+        urlCurl: '',
+        template: $("#wishlist-share-buttons").html(),
+        render: function(api, options){
+          $(api.element).on('click', '.envelope', function(){
+            var subject = encodeURIComponent(document.title);
+            var body = encodeURIComponent("Checkout my Wish List \n"+window.location);
+            var uri = "mailto:?subject="+subject+"&body="+body;
+            window.location.href = uri;
+          });
+          $(api.element).on('click', '.sh-twitter', function() {
+            api.openPopup('twitter');
+          });
+          $(api.element).on('click', '.sh-facebook', function() {
+            api.openPopup('facebook');
+          });
+          $(api.element).on('click', '.sh-googleplus', function() {
+            api.openPopup('googlePlus');
+          });
+          $(api.element).on('click', '.sh-pinterest', function() {
+            api.openPopup('pinterest');
+          });
+        },
+        enableHover: false,
+        enableTracking: true,
     });
   });
 </script>
