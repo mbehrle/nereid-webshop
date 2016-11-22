@@ -87,14 +87,14 @@
                 <div class="col-xs-3">
                   <!-- Choose Language -->
                   {% if current_website.locales %}
-                  {% set current_locale = request.nereid_locale.language %}
+                  {% set current_locale = current_locale.language %}
                   <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
                       <img class="flag flag-{{ current_locale.code[3:]|lower }}"> {{ current_locale.rec_name }}&nbsp;<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                       {% for locale in current_website.locales + (current_website.default_locale,) %}
-                        {% if locale.id != request.nereid_locale.id %}
+                        {% if locale.id != current_locale.id %}
                           <li>
                             <a href="{{url_for('nereid.website.home', locale=locale.code)}}">
                               <img class="flag flag-{{ locale.language.code[3:]|lower }}">&nbsp;{{ locale.language.rec_name }}
