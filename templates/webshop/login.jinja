@@ -2,6 +2,8 @@
 
 {% from '_helpers.jinja' import render_field %}
 
+{% block title %}{{ super() }} | Login{% endblock title %}
+
 {% block breadcrumb %}
 {{ super() }}
 {{ render_breadcrumb_item(_('Login'), url_for('nereid.website.login')) }}
