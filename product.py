@@ -6,7 +6,7 @@ from jinja2.filters import do_striptags
 from werkzeug.exceptions import NotFound
 
 from nereid import jsonify, flash, request, url_for, route, redirect, \
-    render_template, abort, current_locale
+    render_template, abort, current_locale, Markup
 from nereid.contrib.locale import make_lazy_gettext
 
 from forms import GiftCardForm
@@ -207,3 +207,18 @@ class Product:
             'image': self.default_image,
             'link': self.get_absolute_url(),
         }
+
+    def get_meta_description(self):
+        '''
+        Provide a useful description for the meta description tag
+        https://support.google.com/webmasters/answer/79812?hl=en&ref_topic=4617741
+        https://support.google.com/webmasters/answer/35624?rd=1#1
+            <meta name="Description" CONTENT="Author: A.N. Author,
+            Illustrator: P. Picture, Category: Books, Price:  £9.24,
+            Length: 784 pages">
+        '''
+        description = self.name
+        description += ', Category: %s' % self.template.category.name
+        if self.template.brand:
+            description += ', Brand: %s' % self.template.brand.rec_name
+        return Markup(description)

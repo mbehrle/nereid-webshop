@@ -2,6 +2,8 @@
 from trytond.pool import PoolMeta
 from trytond.model import fields
 
+from nereid import Markup
+
 __all__ = ['Node']
 __metaclass__ = PoolMeta
 
@@ -45,3 +47,21 @@ class Node:
                 child.get_menu_item(max_depth=max_depth - 1)
                 for child in self.children
             ]
+
+    def get_meta_description(self):
+        '''
+        Provide a useful description for the meta description tag
+        https://support.google.com/webmasters/answer/79812?hl=en&ref_topic=4617741
+        https://support.google.com/webmasters/answer/35624?rd=1#1
+            <meta name="Description" CONTENT="Author: A.N. Author,
+            Illustrator: P. Picture, Category: Books, Price:  £9.24,
+            Length: 784 pages">
+        '''
+        description = 'Category: %s' % self.rec_name
+        if self.products:
+            description += ', Products: ' + '; '.join(
+                [p.product.name for p in self.products])
+        elif self.children:
+            description += ', Content: ' + '; '.join(
+                [p.name for p in self.children])
+        return Markup(description)
