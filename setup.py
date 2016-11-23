@@ -91,7 +91,7 @@ MODULE2PREFIX = {
 }
 
 MODULE = "nereid_webshop"
-PREFIX = "fio"
+PREFIX = "m9s"
 
 config = ConfigParser.ConfigParser()
 config.readfp(open('tryton.cfg'))
@@ -164,8 +164,8 @@ setup(
     test_loader='trytond.test_loader:Loader',
     tests_require=[
         'pycountry',
-        get_required_version('fio_payment_gateway_authorize_net'),
-        get_required_version('fio_nereid_catalog_variants'),
+        get_required_version('m9s_payment_gateway_authorize_net'),
+        get_required_version('m9s_nereid_catalog_variants'),
         'cssutils',
     ],
     cmdclass={
