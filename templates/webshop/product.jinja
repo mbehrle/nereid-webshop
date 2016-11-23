@@ -108,6 +108,7 @@
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
       <div class="buy-box">
+        {% block buy_box %}
         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
           <meta itemprop="priceCurrency" content="{{ current_locale.currency.code }}" />
           {% set sale_price = product.sale_price(1) %}

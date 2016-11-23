@@ -90,6 +90,7 @@
 {% block cart_summary_macro %}
   {% set cart = get_cart() %}
   {% set currency = cart.sale.currency.code %}
+  {% block order_summary scoped%}
   <div class="cart-summary">
     <div class="row">
       <div class="col-md-12">
@@ -139,6 +140,7 @@
       </div>
     </div>
   </div><!-- END: panel -->
+  {% endblock order_summary %}
 
   {% if cart.sale.shipment_address %}
   <div class="cart-summary">

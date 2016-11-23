@@ -1,16 +1,25 @@
 {% set currency = line.sale.currency.code %}
 
 {% if purpose == 'summary' %}
+{% block cart_summary %}
 <tr id="line-{{ line.id }}">
   <td class="hidden-xs hidden-sm">
-    <a href="{{ url_for('product.product.render', uri=line.product.uri) }}">
+    {%- if line.product.uri -%}
+      <a href="{{ url_for('product.product.render', uri=line.product.uri) }}">
+    {%- endif -%}
       <img src="{{ line.product.default_image.transform_command().thumbnail(100, 100, 'a') }}" alt="{{ line.product.name }}">
+    {%- if line.product.uri -%}
     </a>
+    {%- endif -%}
   </td>
   <td>
-    <a href="{{ url_for('product.product.render', uri=line.product.uri) }}" class="product-name">
+    {%- if line.product.uri -%}
+      <a href="{{ url_for('product.product.render', uri=line.product.uri) }}" class="product-name">
+    {%- endif -%}
       <strong>{{ line.product.name }}</strong>
+    {%- if line.product.uri -%}
     </a>
+    {%- endif -%}
     <br/><strong class="text-muted">{{ _('Qty:') }} </strong>
     {{ line.quantity }} x {{ line.unit_price|currencyformat(currency) }}
   </td>
@@ -18,27 +27,45 @@
       {{ line.amount|currencyformat(currency) }}
     </td>
 </tr>
+{% endblock cart_summary %}
 {% else %}
+{% block cart_details %}
 <tr id="line-{{ line.id }}">
   <td>
-    <a href="{{ url_for('product.product.render', uri=line.product.uri) }}">
+    {%- if line.product.uri -%}
+      <a href="{{ url_for('product.product.render', uri=line.product.uri) }}">
+    {%- endif -%}
       <img src="{{ line.product.default_image.transform_command().thumbnail(100, 100, 'a') }}" alt="{{ line.product.name }}">
+    {%- if line.product.uri -%}
     </a>
+    {%- endif -%}
   </td>
   <td>
-    <a href="{{ url_for('product.product.render', uri=line.product.uri) }}" class="product-name">
+    {% block cart_details_product_name %}
+    {%- if line.product.uri -%}
+      <a href="{{ url_for('product.product.render', uri=line.product.uri) }}" class="product-name">
+    {%- endif -%}
       <strong>{{ line.product.name }}</strong>
-    </a>
+    {%- if line.product.uri -%}
+      </a>
+    {%- endif -%}
+    {% endblock cart_details_product_name %}
+    {% block cart_details_sku %}
     <br><strong class="text-muted">{{ _('SKU:') }} </strong> {{ line.product.code }}
+    {% endblock cart_details_sku %}
+    {% block cart_details_gift_card %}
       {% if line.product and line.product.is_gift_card and line.product.gift_card_delivery_mode in ['virtual', 'combined'] %}
         <br><strong class="text-muted">{{ _('Recipient Name:') }} </strong> {{ line.recipient_name or _('N/A') }}
         <br><strong class="text-muted">{{ _('Recipient E-mail:') }} </strong> {{ line.recipient_email or _('N/A') }}
       {% endif %}
+    {% endblock cart_details_gift_card %}
+    {% block cart_details_attributes %}
       {% if line.product.attributes %}
         {% for attr in line.product.attributes %}
           <br/><strong class="text-muted"> {{ attr.attribute.display_name }} : </strong> {{ attr.value }}
         {% endfor %}
       {% endif %}
+    {% endblock cart_details_attributes %}
       <div class="row">
         <div class="col-xs-12 visible-xs-block">
           <span>
@@ -50,6 +77,7 @@
         </div>
       </div>
       <div class="cart-line-action-block">
+      {% block cart_details_action_block %}
         <span class="text-muted">
           <a href="" data-url="{{ url_for('nereid.cart.delete_from_cart', line=line.id) }}" data-toggle="tooltip"
             data-placement="top" title="" data-original-title="{{ _('Remove Item') }}" class="remove_from_cart" data-ga-event-label="Remove From Cart" data-ga-product-name="{{ line.product.name }}" data-ga-product-category="{{ line.product.account_category and line.product.account_category.name or None }}" data-ga-product-price="{{ line.product.sale_price()|currencyformat(current_locale.currency.code) }}" data-ga-product-id="{{ line.product.id }}" data-ga-product-quantity="{{ line.quantity }}">
@@ -62,6 +90,7 @@
             </span>
           {% endif %}
         </span>
+      {% endblock cart_details_action_block %}
       </div>
   </td>
   <td class="text-right hidden-xs">
@@ -94,4 +123,5 @@
     {{ line.amount|currencyformat(currency) }}
   </td>
 </tr>
+{% endblock cart_details %}
 {% endif %}
