@@ -1,18 +1,20 @@
-{% trans %}
-Dear {% endtrans %} {{ nereid_user.display_name }} {% trans %},
+{% block body %}
+{% trans %}Dear{% endtrans %} {{ nereid_user.display_name }},
 <br/>
-Thank you for signing up. {% endtrans %}
+{% trans %}Thank you for signing up.{% endtrans %}
 <br/>
 <br/>
 {% trans %}
 To verify your account please
 {% endtrans %}
-<a href="{{ nereid_user.get_activation_link(_external=True) }}">{% trans %}click here {% endtrans %}</a>
+<a href="{{ nereid_user.get_activation_link(_external=True) }}"> {% trans %}click here{% endtrans %} </a>
 {% trans %}
 or copy and paste it to your browser:
 {% endtrans %}
 <br/>
 {{ nereid_user.get_activation_link(_external=True) }}
+{% endblock body %}
+{% block footer %}
 <br/>
 <br/>
 {% trans %}
@@ -20,3 +22,4 @@ Thanks,
 <br/>
 Team
 {% endtrans %}
+{% endblock footer %}

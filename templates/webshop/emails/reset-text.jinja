@@ -1,12 +1,17 @@
+{% block body %}
 {% trans %}
 Dear User,
-
+{% endtrans %}
+{% trans %}
 To reset password please click the link below or paste it to your browser:
 {% endtrans %}
 {{ nereid_user.get_reset_password_link(_external=True) }}
+{% endblock body %}
+{% block footer %}
 
 {% trans %}
 Thanks,
 
 Team
 {% endtrans %}
+{% endblock footer %}
