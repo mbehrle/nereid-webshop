@@ -152,7 +152,7 @@
         render: function(api, options){
           $(api.element).on('click', '.envelope', function(){
             var subject = encodeURIComponent(document.title);
-            var body = encodeURIComponent("Checkout my Wish List \n"+window.location);
+            var body = encodeURIComponent("{{ _('Checkout my Wish List') }}\n"+window.location);
             var uri = "mailto:?subject="+subject+"&body="+body;
             window.location.href = uri;
           });

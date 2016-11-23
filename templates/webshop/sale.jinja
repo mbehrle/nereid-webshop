@@ -168,7 +168,7 @@
         data: $('#add-comment-form').serialize(),
       }).success(function(data) {
           new PNotify({
-            title: 'message',
+            title: "{{ _('message') }}",
             text: data.message,
             nonblock: {
               nonblock: true,
@@ -177,7 +177,7 @@
             delay:2000,
             animation: 'show'
           });
-        $('.add-comment').html('<h5><span class="text-muted">Note: </span>' + data.comment +'</h5>');
+        $('.add-comment').html('<h5><span class="text-muted">{{ _('Note:') }}  </span>' + data.comment +'</h5>');
       });
     });
   });

@@ -60,7 +60,7 @@
         #}
     {% endblock extra_head %}
   </head>
-  <body>
+  <body itemscope itemtype="https://schema.org/WebPage">
 
     {% if GOOGLE_TAG_MANAGER %}
     <!-- Google Tag Manager -->
@@ -621,7 +621,7 @@
         .fail(function (result){
           var obj = JSON.parse(result.responseText);
           new PNotify({
-            title: 'Alert',
+            title: "{{ _('Alert') }}",
             text: obj.message,
             type: 'error',
             nonblock: {

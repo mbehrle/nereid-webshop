@@ -57,7 +57,7 @@
           </a>
           {% if current_user.is_authenticated %}
             |
-            <span data-toggle="tooltip" data-placement="top" title="" data-product="{{ line.product.id }}" data-original-title={{ _('Add to Default Wishlist') }} class="add-to-wishlist">
+            <span data-toggle="tooltip" data-placement="top" title="" data-product="{{ line.product.id }}" data-original-title="{{ _('Add to Default Wishlist') }}" class="add-to-wishlist">
               <i class="fa fa-heart"></i> {{ _('Add to wishlist ') }} 
             </span>
           {% endif %}
