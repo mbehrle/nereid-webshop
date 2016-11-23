@@ -6,7 +6,7 @@
 {% from '_helpers.jinja' import render_product %}
 
 {% block title %}{{ product.name }} {{ super() }}{% endblock title %}
-{% block meta_description %}{{ (product.description or '')|striptags|truncate(300) }}{% endblock %}
+{% block meta_description %}{{ (product.get_description() or '')|striptags|truncate(300) }}{% endblock %}
 
 {% block base_stylesheet %}
   <link rel="stylesheet" type="text/css" href="{{ CDN }}{{ url_for('nereid.webshop.send_static_file', filename='css/lightbox.css') }}">
@@ -18,7 +18,7 @@
 <!-- og -->
 <meta property="og:url" content="{{ url_for('product.product.render', uri=product.uri, _external=True) }}"/>
 <meta property="og:title" content="{{ product.name  }}" />
-<meta property="og:description" content="{{ (product.description or '')|striptags|truncate(300) }}" />
+<meta property="og:description" content="{{ (product.get_description() or '')|striptags|truncate(300) }}" />
 <meta property="og:type" content="product"/>
 <meta property="og:image" content="{{ CDN }}{{ product.default_image.transform_command().thumbnail(1500, 1500, 'a') }}"/>
 {% for code in product.codes %}
