@@ -12,13 +12,13 @@
 {% endif %}
 {% endblock %}
 
-{% macro render_breadcrumb_item(title, url) %}
-  <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-    <a href="{{ url }}" itemprop="url">
-      <span itemprop="title">{{ title }}</span>
+{% macro render_breadcrumb_item(title, url) -%}
+  <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a itemprop="item" href="{{ url }}">
+      <span itemprop="name">{{ title }}</span>
     </a>
   </li>
-{% endmacro %}
+{%- endmacro %}
 
 <html lang="{{ current_locale.language.code }}">
   <head>
@@ -107,13 +107,13 @@
                   {% endif %}
                 </div>
                 {% endblock locales %}
-                <div class="col-xs-9 pull-right">
+                <div class="col-xs-9 pull-right" itemscope itemtype="https://schema.org/Organization">
                   <ul class="list-inline pull-right links">
                     {% block header_links %}
                     {% set company = current_website.company %}
                     <li>
                       {% if company.party.phone %}
-                        <a href="tel:{{ company.party.phone }}">&nbsp;<i class="fa fa-phone"></i> &nbsp; {{ company.party.phone }}</a>
+                        <a href="tel:{{ company.party.phone }}">&nbsp;<i class="fa fa-phone"></i> &nbsp; <span itemprop="telephone">{{ company.party.phone }}</span></a>
                       {% endif %}
                     </li>
                     <li>
@@ -136,14 +136,14 @@
       {% endblock header_row_1 %}
 
       {% block header_row_2 %}
-      <div class="container logo-container">
+      <div class="container logo-container" itemscope itemtype="https://schema.org/Organization">
         <div class="row">
           {% block logo %}
             <div class="col-md-3 col-sm-3 col-xs-12">
               <div class="main-logo">
-                <a href="{{ url_for('nereid.website.home') }}">
+                <a itemprop="url" href="{{ url_for('nereid.website.home') }}">
                   {% set company_logo=current_website.company.logo %}
-                  <img src="{{ company_logo and company_logo.transform_command().resize(170, 57, 'a') or LOGO }}">
+                  <img itemprop="logo" src="{{ company_logo and company_logo.transform_command().resize(170, 57, 'a') or LOGO }}">
                 </a>
               </div>
             </div>
@@ -253,7 +253,7 @@
       {% endblock main_navigation %}
     </section>
     <div class="container container-breadcrumb hidden-xs">
-      <ol class="breadcrumb">
+      <ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
         {% block breadcrumb %}
           {{ render_breadcrumb_item(_('Home'), url_for('nereid.website.home')) }}
         {% endblock %}

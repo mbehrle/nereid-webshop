@@ -232,7 +232,7 @@
   {% block product_long_description %}
     {% if product.get_long_description() %}
       <section>
-        <p>{{ product.get_long_description() }}</p>
+        <p itemprop="description">{{ product.get_long_description() }}</p>
       </section>
       <hr/>
     {% endif %}

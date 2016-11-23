@@ -8,13 +8,17 @@
     <span itemprop="name">{{ product.name }}</span>
   </h3>
   <h4>
-    <small class="product-code" itemprop="identifier" content="sku:{{ product.code }}">{{ product.code }}</small>
+    <small class="product-code" itemprop="sku" content="{{ product.code }}">{{ product.code }}</small>
   </h4>
   {% if product.allow_open_amount %}
-    <div itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
-      <meta itemprop="priceCurrency" content="{{ current_locale.currency.code }}" />
-      <h4 class="product-price" itemprop="price">
-        {{ product.gc_min|currencyformat(current_locale.currency.code) }} - {{ product.gc_max|currencyformat(current_locale.currency.code) }}
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+      <span itemprop="priceCurrency" content="{{ current_locale.currency.code }}"></span>
+          <span itemprop="price" content="{{ product.sale_price(1)|currencyformat(current_locale.currency.code) }}"></span>
+      <h4 class="product-price" itemprop="priceSpecification" itemscope itemtype="http://schema.org/UnitPriceSpecification">
+          <span itemprop="priceCurrency" content="{{ current_locale.currency.code }}"></span>
+          {% set min_price = product.gc_min|currencyformat(current_locale.currency.code) %}
+          {% set max_price = product.gc_max|currencyformat(current_locale.currency.code) %}
+          <span itemprop="minPrice" content="{{ min_price }}">{{ min_price }}</span> - <span itemprop="maxPrice" content="{{ max_price }}">{{ max_price }}</span>
       </h4>
     </div>
   {% endif %}
